@@ -60,7 +60,6 @@ span_icmClose = p_tag.find('span', class_='icmClose')
 if span_icmClose:
     a_section_link = span_icmClose.find('a', class_='section__link')
     if a_section_link and 'このウインドウを閉じる' in a_section_link.text:
-        # Replace the <p> tag with a new <div> containing the specified structure
         new_div_tag = BeautifulSoup('''
             <div class="section__button-wrap-function">
               <button class="section__button-close js-close" tabindex="200">
@@ -70,14 +69,34 @@ if span_icmClose:
         ''', 'html.parser')
         p_tag.replace_with(new_div_tag)
 
+divs_without_class = soup.find_all('div', class_=False)
+
+# Remove each <div> without a class attribute
+for div in divs_without_class:
+    div.unwrap()
+
+divs_with_class_ = soup.find_all('div', class_="spTableScroll")
+
+# Remove each <div> without a class attribute
+for div in divs_with_class_:
+    div.unwrap()
 
 # removes the remaining window close button if any
 # closeWindowTag = soup.find('p.section__text:has(span.icmClose:has(a.section__link:contains("このウインドウを閉じる")))')
 # if closeWindowTag:
 #     closeWindowTag.extract()
 
+tags_to_remove_all_classes = ['table', 'th', 'td', "tbody", "thead", "tr"]
+
+for tag_name in tags_to_remove_all_classes:
+    tags = soup.find_all(tag_name)
+    for tag in tags:
+        del tag['class']
+
+tojiru_tag = soup.findAll('div', class_='section__button-wrap-function')[1]
+tojiru_tag.extract()
 
 with open('modified_example.html', 'w', encoding='utf-8') as file:
-    file.write(soup.prettify())
+    file.write(soup.article.prettify())
 
 print("Modified HTML has been saved to 'modified_example.html'")
