@@ -1,10 +1,14 @@
 from bs4 import BeautifulSoup
 from bs4 import Comment
+import re
 from table import change_the_D_table
 from table_type_2 import change_the_C3_table
 
-with open("testfile.html", "r", encoding="utf-8") as file:
+with open("raw_article.html", "r", encoding="utf-8") as file:
     html_content = file.read()
+
+with open('modified_file.html', 'w'):
+  pass
 
 soup = BeautifulSoup(html_content, 'lxml')
 
@@ -51,8 +55,13 @@ for tag in soup.find_all(True):
           new_p = soup.new_tag('p')
           tag['class'] = ["aln-right"]
           if tag.contents[1]:
-            new_p['class'] = ["section__text", "section__text--right"]
             new_p.string = tag.contents[1].get_text(strip=True)
+            pattern = r'(?:\(\d{4}年\d{1,2}月\d{1,2}日(?:現在)?\))|\d{4}年\d{1,2}月\d{1,2}日(?:現在)?'
+            matches = re.findall(pattern, new_p.get_text(strip=True))
+            if(matches):
+              new_p['class'] = ["section__text", "section__text-date"]
+            else:
+              new_p['class'] = ["section__text", "section__text--right"]
             tag.replace_with(new_p)
 
         if tag['class'] == ["alnCenter"]:
@@ -142,12 +151,31 @@ strip_extra_spaces(soup)
 
 table = soup.find('table')
 if table:
-  a = int(input("has D category table type 1, has C2 category type 2 anything else 0: "))
+  a = int(input("If table category is D type 1: \nFor C2 category type 2 \nFor anything else 0: "))
   if(a==1):
-    print("Calling the table func")
     change_the_D_table(soup)
   elif (a==2):
     change_the_C3_table(soup)
+
+# Change the span class that contains ○ as a child text
+target_span = soup.find('span', string='○')
+if(target_span):
+  del target_span['class']
+  grandparent = target_span.find_parent().find_parent()
+  new_div = soup.new_tag('div')
+  new_div['class'] = 'aln-center'
+
+  grandparent.replace_with(new_div)
+  new_div.append(grandparent)
+
+# delete the paret tag of p with string 記 and change the class
+target_p = soup.find('p', string='記')
+if(target_p):
+  target_p.find_parent().unwrap()
+  new_div = soup.new_tag('div')
+  new_div['class'] = 'aln-center'
+  target_p.replace_with(new_div)
+  new_div.append(target_p)
 
 with open('modified_file.html', 'w', encoding='utf-8') as file:
     file.write(soup.article.prettify())
