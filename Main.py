@@ -112,6 +112,20 @@ for tag_name in tags_to_remove_all_classes:
     for tag in tags:
         del tag['class']
 
+# Change the span class that contains ○ as a child text
+target_span = soup.find('span', string='○')
+if(target_span):
+  del target_span['class']
+  grandparent = target_span.find_parent().find_parent()
+  new_div = soup.new_tag('div')
+  new_div['class'] = 'aln-center'
+
+  if(target_span.find_parent()['class'] == ['aln-center']):
+    grandparent.replace_with(new_div)
+    new_div.append(grandparent)
+  else:
+     print()
+
 # add class to the ul, ol tag
 for list_tag in soup.find_all(['ul', 'ol']):
     existing_classes = list_tag.get('class', [])
@@ -156,17 +170,6 @@ if table:
     change_the_D_table(soup)
   elif (a==2):
     change_the_C3_table(soup)
-
-# Change the span class that contains ○ as a child text
-target_span = soup.find('span', string='○')
-if(target_span):
-  del target_span['class']
-  grandparent = target_span.find_parent().find_parent()
-  new_div = soup.new_tag('div')
-  new_div['class'] = 'aln-center'
-
-  grandparent.replace_with(new_div)
-  new_div.append(grandparent)
 
 # delete the paret tag of p with string 記 and change the class
 target_p = soup.find('p', string='記')
