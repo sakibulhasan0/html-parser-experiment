@@ -1,4 +1,4 @@
-1. run in the shell `pip install beautifulsoup4`
+1. run in the shell `pip install beautifulsoup4 && pip install lxml`
 * you may need to use `pip3` instead of `pip`
 2. place your article in the `raw_article.html`.
 3. run the script "Main" using  `python 'script_path'`
