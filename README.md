@@ -6,3 +6,5 @@
 * N. - click the run icon in the vs code, it will run the script in the terminal.
 
 4. the article after modification will be available in the modified_file.html file.
+
+#### please report if there is any issues, also you can contribute if you want to. 
