@@ -1,5 +1,0 @@
-1. run in the shell "pip install beautifulsoup4"
-2. place your article in the raw-article.
-3. run the script "Main" using python "script_path"
- N. - click the run icon in the vs code, it will run the script in the terminal.
-4. the article after modification will be available in the modified_file.html file.
