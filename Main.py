@@ -120,7 +120,8 @@ if(target_span):
   new_div = soup.new_tag('div')
   new_div['class'] = 'aln-center'
 
-  if(target_span.find_parent()['class'] == ['aln-center']):
+  parent_li = target_span.find_parent('li')
+  if('class' in parent_li.attrs and parent_li['class'] == ['aln-center']):
     grandparent.replace_with(new_div)
     new_div.append(grandparent)
   else:
