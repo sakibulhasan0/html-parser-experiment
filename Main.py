@@ -3,6 +3,9 @@ from bs4 import Comment
 import re
 from table import change_the_D_table
 from table_type_2 import change_the_C3_table
+from table_top_header_multi_column_all import table_top_header_multi_column_all
+import time
+start_time = time.time()
 
 with open("raw_article.html", "r", encoding="utf-8") as file:
     html_content = file.read()
@@ -11,6 +14,10 @@ with open('modified_file.html', 'w'):
   pass
 
 soup = BeautifulSoup(html_content, 'lxml')
+
+#For Color printing
+def colored(r, g, b, text):
+    return f"\033[38;2;{r};{g};{b}m{text}\033[0m"
 
 # remove the comments from the file
 article = soup.find('article')
@@ -151,26 +158,21 @@ for li_tag in soup.find_all('li'):
         else:
             span_child['class'] = ['section__list-char']
 
-# Function to recursively strip extra spaces inside the tag content
-def strip_extra_spaces(tag):
-    if tag.name == 'script':
-        return
-
-    if tag.string:
-        tag.string = ' '.join(tag.string.split())
-
-    for child in tag.children:
-        if child.name:
-            strip_extra_spaces(child)
-strip_extra_spaces(soup)
-
-table = soup.find('table')
-if table:
-  a = int(input("If table category is D type 1: \nFor C2 category type 2 \nFor anything else 0: "))
-  if(a==1):
-    change_the_D_table(soup)
-  elif (a==2):
-    change_the_C3_table(soup)
+tables = soup.findAll('table')
+if(len(tables) >= 0):
+  if(len(tables) > 1):
+    print(colored(237, 231, 104, "Mulitiple tables found!\n"))
+  for table in tables:
+    if table:
+      a = int(input(colored(202, 2037, 104, "Please choose category: \nIf D type 1\nIf C2 type 2\nIf header is top only with multi column type 3\nFor anything else type 0: ")))
+      if (not a): break
+      if(a==1):
+        change_the_D_table(soup)
+      elif (a==2):
+        change_the_C3_table(soup)
+      elif (a==3):
+        table_top_header_multi_column_all(soup)
+      else: continue
 
 # delete the paret tag of p with string 記 and change the class
 target_p = soup.find('p', string='記')
@@ -184,4 +186,6 @@ if(target_p):
 with open('modified_file.html', 'w', encoding='utf-8') as file:
     file.write(soup.article.prettify())
 
-print("Modified HTML has been saved to 'modified_file.html'")
+end_time = time.time()
+execution_time = round(end_time - start_time, 2)
+print(f"{colored(41, 240, 55,'🎉 You completed the page in ' +str(execution_time)+' seconds🎉')}\n{colored(202, 2037, 104, 'Modified HTML has been saved to `modified_file.html`')}")
