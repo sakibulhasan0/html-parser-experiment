@@ -33,9 +33,9 @@ for tag in tags_with_style:
 h1_inside_article = article.find('h1')
 if h1_inside_article:
     next_h1_tag = h1_inside_article.find_next('h1')
-    h1_inside_article.extract()
     if next_h1_tag:
-        article.insert(0, next_h1_tag)
+      h1_inside_article.extract()
+      article.insert(0, next_h1_tag)
 
 # change the p tag class
 paragraphs = soup.find_all('p')
