@@ -1,30 +1,31 @@
-def change_the_C3_table(soup):
-  table = soup.find('table')
-  if table:
-      table['class'] = 'section__table section__table-C-3'
-  thead = soup.find('thead')
+def change_the_C3_table(soup, table_tag):
+  # table_tag = soup.find('table')
+  if table_tag:
+      table_tag['class'] = 'section__table section__table-C-3'
+  thead = table_tag.find('thead')
   if thead:
       thead['class'] = 'section__table-heading'
 
-  for tr in soup.find_all('tr'):
+  for tr in table_tag.find_all('tr'):
       tr['class'] = 'section__table-row'
 
-  for th in soup.find_all('th'):
-      th['class'] = 'section__table-head section__table-w-30'
+  for th in table_tag.find_all('th'):
+      th['class'] = 'section__table-head section__table-w-20'
 
-  tbody = soup.find('tbody')
+  tbody = table_tag.find('tbody')
   if tbody:
       tbody['class'] = 'section__table-body section__table-pc'
 
-  for td in soup.find_all('td'):
+  for td in table_tag.find_all('td'):
       td['class'] = 'section__table-data'
 
-  sp_tbody = create_sp_tbody(soup)
+  sp_tbody = create_sp_tbody(soup, table_tag)
   tbody.insert_before(sp_tbody)
+  return table_tag
 
 
-def create_sp_tbody(soup):
-  existing_tbody = soup.find('tbody')
+def create_sp_tbody(soup, table_tag):
+  existing_tbody = table_tag.find('tbody')
   th_tags = existing_tbody.find_all('th')
   td_tags = existing_tbody.find_all('td')
   new_tbody = soup.new_tag('tbody')
