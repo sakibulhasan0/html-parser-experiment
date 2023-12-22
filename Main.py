@@ -3,6 +3,7 @@ from bs4 import Comment
 import re
 from table import change_the_D_table
 from table_type_2 import change_the_C3_table
+from table_G_top_and_left_header_2_column import table_G_top_and_left_header_2_column
 from table_top_header_multi_column_all import table_top_header_multi_column_all
 import time
 start_time = time.time()
@@ -55,13 +56,13 @@ for paragraph in paragraphs:
       paragraph['class'] = new_class_name
 
 # Loop through all tags in the soup and remove the classes
-classes_to_remove = ['imageIcon', 'img', 'spTableScroll', 'text']
+classes_to_remove = ['imageIcon', 'img', 'spTableScroll', 'text', 'marginTop']
 for tag in soup.find_all(True):
     if 'class' in tag.attrs:
         if(tag['class'] == ["alnRight"]):
           new_p = soup.new_tag('p')
           tag['class'] = ["aln-right"]
-          if tag.contents[1]:
+          if len(tag.contents) >= 2:
             new_p.string = tag.contents[1].get_text(strip=True)
             pattern = r'(?:\(\d{4}年\d{1,2}月\d{1,2}日(?:現在)?\))|\d{4}年\d{1,2}月\d{1,2}日(?:現在)?'
             matches = re.findall(pattern, new_p.get_text(strip=True))
@@ -162,16 +163,20 @@ tables = soup.findAll('table')
 if(len(tables) >= 0):
   if(len(tables) > 1):
     print(colored(237, 231, 104, "Mulitiple tables found!\n"))
-  for table in tables:
-    if table:
-      a = int(input(colored(202, 2037, 104, "Please choose category: \nIf D type 1\nIf C2 type 2\nIf header is top only with multi column type 3\nFor anything else type 0: ")))
+  for table_tag in tables:
+    if table_tag:
+      a = int(input(colored(202, 2037, 104, "Please choose category: \nIf D type 1\nIf C3 type 2\nIf header is top only with multi column type 3\ntable_G_top_and_left_header_2_column -- type 4\nFor anything else type 0: ")))
       if (not a): break
       if(a==1):
         change_the_D_table(soup)
       elif (a==2):
-        change_the_C3_table(soup)
+        mod = change_the_C3_table(soup, table_tag)
+        table_tag.replace_with(mod)
       elif (a==3):
         table_top_header_multi_column_all(soup)
+      elif (a==4):
+        mod = table_G_top_and_left_header_2_column(table_tag)
+        table_tag.replace_with(mod)
       else: continue
 
 # delete the paret tag of p with string 記 and change the class
