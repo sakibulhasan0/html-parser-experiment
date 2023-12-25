@@ -19,9 +19,9 @@ def table_G_top_and_left_header_2_column(table_tag):
     th['class'] = 'section__table-head'
 
   th = table_tag.find('th')
-  th['class'] = 'section__table-head section__table-w-30'
+  th['class'] = 'section__table-head'
   next_th_tag = th.find_next('th')
-  next_th_tag['class'] = 'section__table-head section__table-w-70'
+  next_th_tag['class'] = 'section__table-head'
 
   tbody = table_tag.find('tbody')
   if tbody:
