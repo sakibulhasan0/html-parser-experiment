@@ -75,6 +75,9 @@ for tag in soup.find_all(True):
         if tag['class'] == ["alnCenter"]:
           tag['class'] = ["aln-center"]
           continue
+        if tag['class'] == ["clrNote"]:
+          tag['class'] = ["section__text--important"]
+          continue
         tag['class'] = [c for c in tag['class'] if c not in classes_to_remove]
         if not tag['class']:
           del tag['class']
