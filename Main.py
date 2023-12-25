@@ -50,10 +50,9 @@ for paragraph in paragraphs:
             paragraph['class'] = [new_class_name]
             div = soup.new_tag('div')
             div['class'] = ["aln-center"]
-            new_p = paragraph
-            div.append(new_p)
+            paragraph.wrap(div)
     else:
-      paragraph['class'] = new_class_name
+      paragraph['class'] = [new_class_name]
 
 # Loop through all tags in the soup and remove the classes
 classes_to_remove = ['imageIcon', 'img', 'spTableScroll', 'text', 'marginTop', 'noteIt', 'number']
