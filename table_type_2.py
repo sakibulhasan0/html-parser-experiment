@@ -10,7 +10,7 @@ def change_the_C3_table(soup, table_tag):
       tr['class'] = 'section__table-row'
 
   for th in table_tag.find_all('th'):
-      th['class'] = 'section__table-head section__table-w-20'
+      th['class'] = 'section__table-head'
 
   tbody = table_tag.find('tbody')
   if tbody:
