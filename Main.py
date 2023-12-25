@@ -56,7 +56,7 @@ for paragraph in paragraphs:
       paragraph['class'] = new_class_name
 
 # Loop through all tags in the soup and remove the classes
-classes_to_remove = ['imageIcon', 'img', 'spTableScroll', 'text', 'marginTop']
+classes_to_remove = ['imageIcon', 'img', 'spTableScroll', 'text', 'marginTop', 'noteIt', 'number']
 for tag in soup.find_all(True):
     if 'class' in tag.attrs:
         if(tag['class'] == ["alnRight"]):
@@ -173,7 +173,8 @@ if(len(tables) >= 0):
         mod = change_the_C3_table(soup, table_tag)
         table_tag.replace_with(mod)
       elif (a==3):
-        table_top_header_multi_column_all(soup)
+        mod = table_top_header_multi_column_all(soup, table_tag)
+        table_tag.replace_with(mod)
       elif (a==4):
         mod = table_G_top_and_left_header_2_column(table_tag)
         table_tag.replace_with(mod)
