@@ -46,13 +46,12 @@ for paragraph in paragraphs:
         if paragraph['class'] == ['alnRight']:
           paragraph['class'] = [new_class_name, 'section__text--right']
         if paragraph['class'] == ["alnCenter"]:
-            paragraph['class'] = [new_class_name]
-            div = soup.new_tag('div')
-            div['class'] = ["aln-center"]
-            new_p = paragraph
-            div.append(new_p)
+          paragraph['class'] = [new_class_name]
+          div = soup.new_tag('div')
+          div['class'] = ["aln-center"]
+          paragraph.wrap(div)
     else:
-      paragraph['class'] = new_class_name
+      paragraph['class'] = [new_class_name]
 
 # Loop through all tags in the soup and remove the classes
 classes_to_remove = ['imageIcon', 'img', 'spTableScroll', 'text']
